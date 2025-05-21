@@ -1,0 +1,28 @@
+lzc-sdk-version: "0.1"
+name: Airstation
+package: cloud.lazycat.app.airstation
+version: 1.0.0
+description: 🎵 Your own online radio station
+homepage: https://github.com/cheatsnake/airstation
+author: cheatsnake
+application:
+  subdomain: airstation
+  background_task: true
+  public_path:
+    - /
+  routes:
+    - /=http://airstation:7331/
+services:
+  airstation:
+    image: registry.lazycat.cloud/czyt/cheatsnake/airstation:8de9c14f02894258
+    environment:
+      - AIRSTATION_SECRET_KEY=${AIRSTATION_SECRET_KEY:-lazycat001}
+      - AIRSTATION_JWT_SIGN=${AIRSTATION_JWT_SIGN:-NO3m3TPiONanmtRjeynrPBi9vs8wi3EY96V15}
+    binds:
+      - /lzcapp/var/storage:/app/storage/
+      - /lzcapp/var/static:/app/static/
+    health_check:
+      test:
+        - CMD-SHELL
+        - wget --spider -q http://localhost:7331/
+      start_period: 30s
