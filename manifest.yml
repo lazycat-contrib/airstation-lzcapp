@@ -14,6 +14,7 @@ application:
     - /=http://airstation:7331/
 services:
   airstation:
+  # cheatsnake/airstation:1.0.0
     image: registry.lazycat.cloud/czyt/cheatsnake/airstation:8de9c14f02894258
     environment:
       - AIRSTATION_SECRET_KEY=${AIRSTATION_SECRET_KEY:-lazycat001}
