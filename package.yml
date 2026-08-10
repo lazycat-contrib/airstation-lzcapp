@@ -1,0 +1,14 @@
+package: cloud.lazycat.app.airstation
+version: 1.4.1
+name: Airstation
+description: Your own online radio station
+min_os_version: 1.5.0
+homepage: https://github.com/cheatsnake/airstation
+author: cheatsnake
+locales:
+  zh:
+    name: Airstation
+    description: 你的在线电台
+  en:
+    name: Airstation
+    description: Your own online radio station

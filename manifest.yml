@@ -1,29 +1,30 @@
-lzc-sdk-version: "0.1"
-name: Airstation
-package: cloud.lazycat.app.airstation
-version: 1.0.0
-description: 🎵 Your own online radio station
-homepage: https://github.com/cheatsnake/airstation
-author: cheatsnake
 application:
   subdomain: airstation
   background_task: true
   public_path:
     - /
-  routes:
-    - /=http://airstation:7331/
+  upstreams:
+    - location: /
+      backend: http://airstation:7331/
 services:
   airstation:
-  # cheatsnake/airstation:1.0.0
-    image: registry.lazycat.cloud/czyt/cheatsnake/airstation:8de9c14f02894258
+    # docker.io/cheatsnake/airstation:1.0.0
+    # upstream: docker.io/cheatsnake/airstation:1.4.1
+    image: docker.1ms.run/cheatsnake/airstation:1.4.1
     environment:
-      - AIRSTATION_SECRET_KEY=${AIRSTATION_SECRET_KEY:-lazycat001}
-      - AIRSTATION_JWT_SIGN=${AIRSTATION_JWT_SIGN:-NO3m3TPiONanmtRjeynrPBi9vs8wi3EY96V15}
+      - AIRSTATION_SECRET_KEY={{ stable_secret "airstation_secret_key" }}
+      - AIRSTATION_JWT_SIGN={{ stable_secret "airstation_jwt_sign" }}
     binds:
       - /lzcapp/var/storage:/app/storage/
       - /lzcapp/var/static:/app/static/
-    health_check:
+    healthcheck:
       test:
-        - CMD-SHELL
-        - wget --spider -q http://localhost:7331/
-      start_period: 30s
+        - CMD
+        - wget
+        - --spider
+        - -q
+        - http://localhost:7331/
+      interval: 10s
+      timeout: 5s
+      retries: 3
+      start_period: 10s
